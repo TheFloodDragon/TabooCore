@@ -1,5 +1,7 @@
 # TabooCore
 
+枫溪为了和对象敢敢一起玩高版本 Minecraft，制作了这个核心。
+
 TabooCore 是一个 Java Agent，让 [TabooLib](https://github.com/TabooLib/TabooLib) 能在**原版 Minecraft 服务端**（无需 Bukkit/Spigot/Paper）上运行。通过 [SpongePowered Mixin](https://github.com/SpongePowered/Mixin) 钩入服务端生命周期，实现插件加载、事件系统和任务调度。
 
 ## 快速开始
