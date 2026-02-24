@@ -181,3 +181,11 @@ object MyListener {
 - **Kotlinx Coroutines 1.10.2** — 打包进 JAR
 - **TabooLib / Kotlin 运行时** — 启动时动态下载，所有插件共享
 - **Minecraft Server JAR** — 仅编译期使用（`libs/` 目录）
+
+## 感谢
+
+- [TabooLib](https://github.com/TabooLib/TabooLib)
+- [SpongePowered Mixin](https://github.com/SpongePowered/Mixin)
+- [Kotlin](https://kotlinlang.org/)
+- [Kotlinx Coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+- @BingZi-233 赞助的AI开发Token
