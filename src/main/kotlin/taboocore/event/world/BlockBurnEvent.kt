@@ -1,28 +1,25 @@
 package taboocore.event.world
 
 import net.minecraft.core.BlockPos
-import net.minecraft.server.level.ServerPlayer
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.state.BlockState
-import taboocore.player.Player
 import taboolib.common.event.CancelableInternalEvent
 import taboolib.common.event.InternalEvent
 
 /**
- * 方块破坏事件
+ * 方块燃烧事件
  */
-class BlockBreakEvent {
+class BlockBurnEvent {
 
     /**
-     * 方块破坏前触发
+     * 方块被火焰烧毁前触发
      *
-     * @property player 破坏方块的玩家
      * @property block 方块状态
      * @property x 方块 X 坐标
      * @property y 方块 Y 坐标
      * @property z 方块 Z 坐标
      */
     class Pre(
-        val player: Player,
         val block: BlockState,
         val x: Int,
         val y: Int,
@@ -30,16 +27,14 @@ class BlockBreakEvent {
     ) : CancelableInternalEvent()
 
     /**
-     * 方块破坏后触发
+     * 方块被火焰烧毁后触发
      *
-     * @property player 破坏方块的玩家
      * @property block 方块状态
      * @property x 方块 X 坐标
      * @property y 方块 Y 坐标
      * @property z 方块 Z 坐标
      */
     class Post(
-        val player: Player,
         val block: BlockState,
         val x: Int,
         val y: Int,
@@ -48,19 +43,19 @@ class BlockBreakEvent {
 
     companion object {
         /**
-         * 方块破坏前触发，返回 true 表示事件被取消
+         * 方块被火焰烧毁前触发，返回 true 表示事件被取消
          */
-        fun fireBlockBreakPre(player: ServerPlayer, pos: BlockPos, state: BlockState): Boolean {
-            val event = Pre(Player.of(player), state, pos.x, pos.y, pos.z)
+        fun fireBlockBurnPre(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean {
+            val event = Pre(state, pos.x, pos.y, pos.z)
             event.call()
             return event.isCancelled
         }
 
         /**
-         * 方块破坏后触发
+         * 方块被火焰烧毁后触发
          */
-        fun fireBlockBreakPost(player: ServerPlayer, pos: BlockPos, state: BlockState) {
-            Post(Player.of(player), state, pos.x, pos.y, pos.z).call()
+        fun fireBlockBurnPost(level: ServerLevel, pos: BlockPos, state: BlockState) {
+            Post(state, pos.x, pos.y, pos.z).call()
         }
     }
 }

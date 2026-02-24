@@ -6,7 +6,27 @@
     "MixinMinecraftServer",
     "MixinDedicatedServer",
     "MixinPlayerList",
-    "MixinServerPlayerGameMode"
+    "MixinServerPlayerGameMode",
+    "MixinServerGamePacketListenerImpl",
+    "MixinServerPlayer",
+    "MixinFireBlock",
+    "MixinServerExplosion",
+    "MixinServerLevel",
+    "MixinLivingEntity",
+    "MixinProjectile",
+    "MixinMob",
+    "MixinEntity",
+    "MixinTamableAnimal",
+    "MixinVehicleEntity",
+    "MixinCropBlock",
+    "MixinDispenserBlock",
+    "MixinFlowingFluid",
+    "MixinFoodData",
+    "MixinIceBlock",
+    "MixinLeavesBlock",
+    "MixinLiquidBlock",
+    "MixinPlayerAdvancements",
+    "MixinSnowLayerBlock"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -8,14 +8,14 @@ import taboolib.common.event.CancelableInternalEvent
 import taboolib.common.event.InternalEvent
 
 /**
- * 方块破坏事件
+ * 方块放置事件
  */
-class BlockBreakEvent {
+class BlockPlaceEvent {
 
     /**
-     * 方块破坏前触发
+     * 方块放置前触发
      *
-     * @property player 破坏方块的玩家
+     * @property player 放置方块的玩家
      * @property block 方块状态
      * @property x 方块 X 坐标
      * @property y 方块 Y 坐标
@@ -30,9 +30,9 @@ class BlockBreakEvent {
     ) : CancelableInternalEvent()
 
     /**
-     * 方块破坏后触发
+     * 方块放置后触发
      *
-     * @property player 破坏方块的玩家
+     * @property player 放置方块的玩家
      * @property block 方块状态
      * @property x 方块 X 坐标
      * @property y 方块 Y 坐标
@@ -48,18 +48,18 @@ class BlockBreakEvent {
 
     companion object {
         /**
-         * 方块破坏前触发，返回 true 表示事件被取消
+         * 方块放置前触发，返回 true 表示事件被取消
          */
-        fun fireBlockBreakPre(player: ServerPlayer, pos: BlockPos, state: BlockState): Boolean {
+        fun fireBlockPlacePre(player: ServerPlayer, pos: BlockPos, state: BlockState): Boolean {
             val event = Pre(Player.of(player), state, pos.x, pos.y, pos.z)
             event.call()
             return event.isCancelled
         }
 
         /**
-         * 方块破坏后触发
+         * 方块放置后触发
          */
-        fun fireBlockBreakPost(player: ServerPlayer, pos: BlockPos, state: BlockState) {
+        fun fireBlockPlacePost(player: ServerPlayer, pos: BlockPos, state: BlockState) {
             Post(Player.of(player), state, pos.x, pos.y, pos.z).call()
         }
     }
