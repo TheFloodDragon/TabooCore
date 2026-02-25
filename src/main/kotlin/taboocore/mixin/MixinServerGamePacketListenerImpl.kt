@@ -208,12 +208,17 @@ abstract class MixinServerGamePacketListenerImpl {
         clearInteractState()
     }
 
-    // ========== Interact (LEFT_CLICK_AIR via arm swing) ==========
+    // ========== Interact (LEFT_CLICK_AIR via arm swing) + PlayerAnimationEvent ==========
 
     @Inject(method = ["handleAnimate"], at = [At("HEAD")], cancellable = true)
     private fun onHandleAnimate(packet: ServerboundSwingPacket, ci: CallbackInfo) {
         val hand = packet.getHand()
         val item = player.getItemInHand(hand).copy()
+        // PlayerAnimationEvent
+        if (PlayerAnimationEvent.firePre(player, hand)) {
+            ci.cancel()
+            return
+        }
         if (PlayerInteractEvent.firePre(player, PlayerInteractEvent.Action.LEFT_CLICK_AIR, item, hand, null, null, null)) {
             ci.cancel()
         }
@@ -223,6 +228,7 @@ abstract class MixinServerGamePacketListenerImpl {
     private fun onHandleAnimatePost(packet: ServerboundSwingPacket, ci: CallbackInfo) {
         val hand = packet.getHand()
         val item = player.getItemInHand(hand).copy()
+        PlayerAnimationEvent.firePost(player, hand)
         PlayerInteractEvent.firePost(player, PlayerInteractEvent.Action.LEFT_CLICK_AIR, item, hand, null, null, null)
     }
 

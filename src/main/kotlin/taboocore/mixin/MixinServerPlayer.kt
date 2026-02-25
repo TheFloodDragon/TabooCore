@@ -227,4 +227,15 @@ abstract class MixinServerPlayer {
         levelChangeFired = false
         PlayerLevelChangeEvent.firePost(this as ServerPlayer, levelChangeOldLevel, amount)
     }
+
+    // ========== PlayerChangedWorldEvent ==========
+
+    @Inject(method = ["triggerDimensionChangeTriggers"], at = [At("HEAD")])
+    private fun onTriggerDimensionChangeTriggers(oldLevel: ServerLevel, ci: CallbackInfo) {
+        val player = this as ServerPlayer
+        val newLevel = player.level() as ServerLevel
+        if (oldLevel !== newLevel) {
+            PlayerChangedWorldEvent.firePost(player, oldLevel, newLevel)
+        }
+    }
 }

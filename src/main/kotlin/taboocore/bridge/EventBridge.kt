@@ -1,11 +1,13 @@
 package taboocore.bridge
 
+import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerPlayer
 import taboocore.player.Player
 import taboocore.event.PlayerJoinEvent
 import taboocore.event.PlayerQuitEvent
 import taboocore.event.ServerTickEvent
 import taboocore.platform.TabooCoreExecutor
+import taboocore.util.ServerUtils
 import taboolib.common.LifeCycle
 import taboolib.common.TabooLib
 
@@ -28,7 +30,8 @@ object EventBridge {
      * 服务器初始化完成后调用（initServer RETURN）
      * 触发 ENABLE 生命周期，加载并启用插件
      */
-    fun fireServerStarted() {
+    fun fireServerStarted(server: MinecraftServer) {
+        ServerUtils.serverInstance = server
         // ENABLE: 插件可以监听事件
         TabooLib.lifeCycle(LifeCycle.ENABLE)
         taboocore.loader.PluginLoader.loadAll()

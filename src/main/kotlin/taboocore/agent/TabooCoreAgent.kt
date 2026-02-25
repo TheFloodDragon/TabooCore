@@ -117,7 +117,7 @@ object TabooCoreAgent {
                 libDir.walkTopDown()
                     .filter { it.extension == "jar" }
                     .forEach { inst.appendToSystemClassLoaderSearch(JarFile(it)) }
-                println("[TabooCore] ${libDir.walkTopDown().filter { it.extension == "jar" }.count()} library JARs added to classpath")
+                println("[TabooCore] ${libDir.walkTopDown().count { it.extension == "jar" }} library JARs added to classpath")
             }
         } catch (e: Exception) {
             System.err.println("[TabooCore] failed to load server JAR: ${e.message}")
@@ -173,10 +173,10 @@ object TabooCoreAgent {
             try {
                 val cvaClass = Class.forName("taboolib.common.platform.ClassVisitorAwake")
                 val cvaConstructor = cvaClass.getConstructor(LifeCycle::class.java)
-                for (lc in LifeCycle.values()) {
+                for (lc in LifeCycle.entries) {
                     registerMethod.invoke(null, cvaConstructor.newInstance(lc))
                 }
-                println("[TabooCore] Registered ClassVisitorAwake x${LifeCycle.values().size}")
+                println("[TabooCore] Registered ClassVisitorAwake x${LifeCycle.entries.size}")
             } catch (e: Throwable) {
                 System.err.println("[TabooCore] Failed to register ClassVisitorAwake: ${e.message}")
                 e.printStackTrace()

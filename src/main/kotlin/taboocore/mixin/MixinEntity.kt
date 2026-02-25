@@ -1,6 +1,8 @@
 package taboocore.mixin
 
+import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.Entity
+import net.minecraft.world.level.block.Portal
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.Shadow
 import org.spongepowered.asm.mixin.Unique
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable
 import taboocore.event.entity.EntityAirChangeEvent
 import taboocore.event.entity.EntityCombustEvent
 import taboocore.event.entity.EntityDismountEvent
+import taboocore.event.entity.EntityEnterPortalEvent
 import taboocore.event.entity.EntityMountEvent
 import taboocore.event.entity.EntityTeleportEvent
 import taboocore.event.vehicle.VehicleEnterEvent
@@ -163,5 +166,19 @@ abstract class MixinEntity {
     @Inject(method = ["setAirSupply"], at = [At("TAIL")])
     private fun onSetAirSupplyPost(supply: Int, ci: CallbackInfo) {
         EntityAirChangeEvent.firePost(this as Entity, supply)
+    }
+
+    // ============ EntityEnterPortalEvent ============
+
+    @Inject(method = ["setAsInsidePortal"], at = [At("HEAD")], cancellable = true)
+    private fun onSetAsInsidePortalPre(portal: Portal, pos: BlockPos, ci: CallbackInfo) {
+        if (EntityEnterPortalEvent.firePre(this as Entity, pos)) {
+            ci.cancel()
+        }
+    }
+
+    @Inject(method = ["setAsInsidePortal"], at = [At("RETURN")])
+    private fun onSetAsInsidePortalPost(portal: Portal, pos: BlockPos, ci: CallbackInfo) {
+        EntityEnterPortalEvent.firePost(this as Entity, pos)
     }
 }

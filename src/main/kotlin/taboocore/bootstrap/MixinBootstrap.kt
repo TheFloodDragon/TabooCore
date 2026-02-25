@@ -90,9 +90,11 @@ object MixinBootstrap {
             val inst = TabooCoreAgent.instrumentation!!
             val javaBase = Class::class.java.module
             val thisModule = MixinBootstrap::class.java.module
-            inst.redefineModule(javaBase, emptySet(), emptyMap(),
+            inst.redefineModule(
+                javaBase, emptySet(), emptyMap(),
                 mapOf("java.lang" to setOf(thisModule), "jdk.internal.misc" to setOf(thisModule)),
-                emptySet(), emptyMap())
+                emptySet(), emptyMap()
+            )
 
             // 获取 jdk.internal.misc.Unsafe 实例（用于写入 final 字段）
             val internalUnsafeClass = Class.forName("jdk.internal.misc.Unsafe")
@@ -122,7 +124,7 @@ object MixinBootstrap {
             // 收集需要注入的版本
             val existingNames = currentValues.map { (it as Enum<*>).name }.toSet()
             val newEntries = mutableListOf<Any>()
-            for (ver in 19..25) {
+            for (ver in 21..25) {
                 val name = "JAVA_$ver"
                 if (name in existingNames) continue
                 val ordinal = currentValues.size + newEntries.size
@@ -165,7 +167,8 @@ object MixinBootstrap {
     }
 
     private class MixinClassTransformer : ClassFileTransformer {
-        @Volatile private var injected = false
+        @Volatile
+        private var injected = false
 
         override fun transform(
             loader: ClassLoader?,
@@ -198,8 +201,10 @@ object MixinBootstrap {
                 // 打开 java.net 模块，允许反射访问 URLClassLoader.addURL
                 val javaBase = java.net.URLClassLoader::class.java.module
                 val thisModule = MixinBootstrap::class.java.module
-                inst.redefineModule(javaBase, emptySet(), emptyMap(),
-                    mapOf("java.net" to setOf(thisModule)), emptySet(), emptyMap())
+                inst.redefineModule(
+                    javaBase, emptySet(), emptyMap(),
+                    mapOf("java.net" to setOf(thisModule)), emptySet(), emptyMap()
+                )
 
                 val addURL = java.net.URLClassLoader::class.java.getDeclaredMethod("addURL", java.net.URL::class.java)
                 addURL.isAccessible = true

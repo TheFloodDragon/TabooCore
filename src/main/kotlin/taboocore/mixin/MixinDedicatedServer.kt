@@ -16,6 +16,6 @@ abstract class MixinDedicatedServer {
      */
     @Inject(method = ["initServer"], at = [At("TAIL")])
     private fun onServerInitialized(cir: CallbackInfoReturnable<Boolean>) {
-        EventBridge.fireServerStarted()
+        EventBridge.fireServerStarted(this as net.minecraft.server.MinecraftServer)
     }
 }
