@@ -55,6 +55,19 @@ dependencies {
     compileOnly(libs.netty.all)
 }
 
+// 资源处理
+tasks.processResources {
+    filesMatching("/*.json") {
+        expand(
+            "modules" to listOf("common-reflex", "basic-configuration", "minecraft-command-helper")
+                .joinToString(prefix = "[", postfix = "]", transform = { "\"$it\"" }),
+            "taboolibVersion" to libs.versions.taboolib.get(),
+            "kotlinVersion" to libs.versions.kotlin.get(),
+            "coroutinesVersion" to libs.versions.coroutines.get(),
+        )
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_25)
